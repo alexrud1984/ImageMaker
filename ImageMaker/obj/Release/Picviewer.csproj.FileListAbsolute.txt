@@ -1,0 +1,10 @@
+D:\Projects\advanced\task2\Picviewer\bin\Release\Picviewer.exe.config
+D:\Projects\advanced\task2\Picviewer\bin\Release\Picviewer.exe
+D:\Projects\advanced\task2\Picviewer\bin\Release\Picviewer.pdb
+D:\Projects\advanced\task2\Picviewer\bin\Release\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\Projects\advanced\task2\Picviewer\bin\Release\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\Projects\advanced\task2\Picviewer\obj\Release\Picviewer.PicViewer.resources
+D:\Projects\advanced\task2\Picviewer\obj\Release\Picviewer.Properties.Resources.resources
+D:\Projects\advanced\task2\Picviewer\obj\Release\Picviewer.csproj.GenerateResource.Cache
+D:\Projects\advanced\task2\Picviewer\obj\Release\Picviewer.exe
+D:\Projects\advanced\task2\Picviewer\obj\Release\Picviewer.pdb
