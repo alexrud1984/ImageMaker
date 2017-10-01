@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -36,12 +37,15 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.tagsTextBox = new System.Windows.Forms.TextBox();
+            this.addTagButton = new System.Windows.Forms.Button();
             this.tagsLabel = new System.Windows.Forms.Label();
+            this.tagsFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.imageViewerBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imageViewerBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -52,7 +56,7 @@
             this.exitToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(740, 29);
+            this.menuStrip1.Size = new System.Drawing.Size(756, 29);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -98,7 +102,7 @@
             this.panel1.Controls.Add(this.pictureBox);
             this.panel1.Location = new System.Drawing.Point(0, 27);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(740, 454);
+            this.panel1.Size = new System.Drawing.Size(581, 318);
             this.panel1.TabIndex = 1;
             // 
             // pictureBox
@@ -112,44 +116,66 @@
             // 
             // panel2
             // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.AutoScroll = true;
             this.panel2.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Controls.Add(this.tagsTextBox);
+            this.panel2.Controls.Add(this.addTagButton);
             this.panel2.Controls.Add(this.tagsLabel);
-            this.panel2.Location = new System.Drawing.Point(0, 482);
+            this.panel2.Location = new System.Drawing.Point(580, 27);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(739, 28);
+            this.panel2.Size = new System.Drawing.Size(175, 38);
             this.panel2.TabIndex = 2;
             // 
-            // tagsTextBox
+            // addTagButton
             // 
-            this.tagsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.addTagButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tagsTextBox.Font = new System.Drawing.Font("Segoe Print", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tagsTextBox.Location = new System.Drawing.Point(57, -3);
-            this.tagsTextBox.Name = "tagsTextBox";
-            this.tagsTextBox.Size = new System.Drawing.Size(677, 29);
-            this.tagsTextBox.TabIndex = 1;
+            this.addTagButton.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.addTagButton.Font = new System.Drawing.Font("Segoe Print", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.addTagButton.Location = new System.Drawing.Point(87, -1);
+            this.addTagButton.Name = "addTagButton";
+            this.addTagButton.Size = new System.Drawing.Size(83, 34);
+            this.addTagButton.TabIndex = 4;
+            this.addTagButton.Text = "Add";
+            this.addTagButton.UseVisualStyleBackColor = false;
+            this.addTagButton.Click += new System.EventHandler(this.addTagButton_Click);
             // 
             // tagsLabel
             // 
-            this.tagsLabel.AutoSize = true;
-            this.tagsLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tagsLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tagsLabel.Font = new System.Drawing.Font("Segoe Print", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tagsLabel.Location = new System.Drawing.Point(0, 0);
+            this.tagsLabel.Location = new System.Drawing.Point(10, 2);
+            this.tagsLabel.Margin = new System.Windows.Forms.Padding(40);
             this.tagsLabel.Name = "tagsLabel";
-            this.tagsLabel.Size = new System.Drawing.Size(53, 28);
+            this.tagsLabel.Size = new System.Drawing.Size(65, 28);
             this.tagsLabel.TabIndex = 0;
-            this.tagsLabel.Text = "Tags:";
+            this.tagsLabel.Text = "Tags";
+            this.tagsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tagsFlowLayoutPanel
+            // 
+            this.tagsFlowLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tagsFlowLayoutPanel.AutoScroll = true;
+            this.tagsFlowLayoutPanel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.tagsFlowLayoutPanel.Location = new System.Drawing.Point(580, 65);
+            this.tagsFlowLayoutPanel.Name = "tagsFlowLayoutPanel";
+            this.tagsFlowLayoutPanel.Size = new System.Drawing.Size(175, 277);
+            this.tagsFlowLayoutPanel.TabIndex = 3;
+            // 
+            // imageViewerBindingSource
+            // 
+            this.imageViewerBindingSource.DataSource = typeof(ImageMaker.ImageViewer);
             // 
             // ImageViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(740, 511);
+            this.ClientSize = new System.Drawing.Size(756, 345);
+            this.Controls.Add(this.tagsFlowLayoutPanel);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
@@ -162,7 +188,7 @@
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imageViewerBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -179,7 +205,9 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label tagsLabel;
-        private System.Windows.Forms.TextBox tagsTextBox;
+        private System.Windows.Forms.BindingSource imageViewerBindingSource;
+        private System.Windows.Forms.Button addTagButton;
+        private System.Windows.Forms.FlowLayoutPanel tagsFlowLayoutPanel;
     }
 }
 

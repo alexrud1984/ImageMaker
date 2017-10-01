@@ -16,7 +16,6 @@ D:\Projects\advanced\task2\ImageMaker\bin\Release\Picviewer.exe
 D:\Projects\advanced\task2\ImageMaker\bin\Release\Picviewer.pdb
 D:\Projects\advanced\task2\ImageMaker\bin\Release\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 D:\Projects\advanced\task2\ImageMaker\bin\Release\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-D:\Projects\advanced\task2\ImageMaker\obj\Release\ImageMaker.csprojResolveAssemblyReference.cache
 D:\Projects\advanced\task2\ImageMaker\obj\Release\ImageMaker.ImageViewer.resources
 D:\Projects\advanced\task2\ImageMaker\obj\Release\Picviewer.Properties.Resources.resources
 D:\Projects\advanced\task2\ImageMaker\obj\Release\ImageMaker.csproj.GenerateResource.Cache

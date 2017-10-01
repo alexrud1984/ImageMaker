@@ -14,7 +14,7 @@ namespace ImageMaker
         List<string> PossibleFileFormatList { set; get; }
         Image CurrentImage { set; get; }
         string openedFileName { set; get; }
-        string Tags { set; get; }
+        List<string> TagsList { set; get; }
 
         void ShowImage();
         void ErrorMessage(string msg);

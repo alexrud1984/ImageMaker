@@ -35,7 +35,7 @@ namespace ImageMaker
             try
             {
                 List<string> tagsList = new List<string>();
-                tagsList.Add(imageViewer.Tags);
+                tagsList = imageViewer.TagsList;
                 AttachTagsToImage(tagsList, imageViewer.CurrentImage);
                 switch (savePictureFileInfo.Extension)
                 {
@@ -93,7 +93,7 @@ namespace ImageMaker
                     imageViewer.ErrorMessage("Wrong file type of file doesn't exist.");
                 }
                 imageViewer.ShowImage();
-                imageViewer.Tags = GetImageTags(imageViewer.CurrentImage, openedImageFileInfo.Extension);
+                imageViewer.TagsList = GetImageTags(imageViewer.CurrentImage, openedImageFileInfo.Extension);
             }
         }
 
@@ -105,16 +105,16 @@ namespace ImageMaker
             return stream;
         }
 
-        private string GetImageTags(Image image, string extension)
+        private List<string> GetImageTags(Image image, string extension)
         {
             PropertyItem tagPropertyItem = GetPropertyItemByID(image, 0x9286);
-            string tags = String.Empty;
+            string tagString = String.Empty;
             if (tagPropertyItem != null)
             {
                 switch(extension)
                 {
                     case ".png":
-                        tags = System.Text.Encoding.Default.GetString(tagPropertyItem.Value);
+                        tagString = System.Text.Encoding.Default.GetString(tagPropertyItem.Value);
                         break;
                     default:
                         List<byte> tagByteList = new List<byte>();
@@ -123,11 +123,11 @@ namespace ImageMaker
                             tagByteList.Add(tagPropertyItem.Value[i]);
                         }
                         byte[] tagByteArray = tagByteList.ToArray();
-                        tags = System.Text.Encoding.Default.GetString(tagByteArray);
+                        tagString = System.Text.Encoding.Default.GetString(tagByteArray);
                         break;
                 }
             }
-            return tags;
+            return tagString.Split('|').ToList();
         }
 
         private PropertyItem GetPropertyItemByID(Image img, int id)
@@ -147,7 +147,7 @@ namespace ImageMaker
                 }
                 else
                 {
-                    value = String.Format("{0}, {1}", value, tag);
+                    value = String.Format("{0}|{1}", value, tag);
                 }
             }
             propItem.Id = 0x9286;

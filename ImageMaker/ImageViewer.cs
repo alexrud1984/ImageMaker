@@ -21,6 +21,7 @@ namespace ImageMaker
         }
 
         private List<string> possibleFileFormatList = new List<string>();
+        private List<TextBox> tagsTextBoxList = new List<TextBox>();
 
         public List<string> PossibleFileFormatList
         {
@@ -33,19 +34,51 @@ namespace ImageMaker
                 return possibleFileFormatList;
             }
         }
-        public List<string> PictureTagsList { set; get; }
         public Image CurrentImage { set; get; }
         public string openedFileName { set; get; }
-        public string Tags
+        public List<string> TagsList
         {
             get
             {
-                return tagsTextBox.Text;
+                List<string> tagsStringList = new List<string>();
+                foreach (var tagTextBox in tagsTextBoxList)
+                {
+                    if (!String.IsNullOrEmpty(tagTextBox.Text))
+                    {
+                        tagsStringList.Add(tagTextBox.Text);
+                    }
+                }
+                return tagsStringList;
             }
-
             set
             {
-                tagsTextBox.Text = value;
+                tagsTextBoxList.Clear();
+                tagsFlowLayoutPanel.Controls.Clear();
+                foreach (var tag in value)
+                {
+                    TextBox tb = CreateTagTextBox();
+                    tb.Text = tag;
+                    tagsTextBoxList.Add(tb);
+                    tagsFlowLayoutPanel.Controls.Add(tb);
+                }
+            }
+        }
+
+        private TextBox CreateTagTextBox()
+        {
+            TextBox tb = new TextBox();
+            tb.Font = new Font(new FontFamily("Segoe Print"), 12);
+            tb.Width = tagsFlowLayoutPanel.Width - 10;
+            tb.KeyDown += TagTextBox_KeyDown;
+            return tb;
+        }
+
+        private void TagTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e != null && e.KeyData == Keys.Enter)
+            {
+                addTagButton_Click(sender, e);
+                tagsTextBoxList.Last().Focus();
             }
         }
 
@@ -134,5 +167,14 @@ namespace ImageMaker
             Close();
         }
 
+        private void addTagButton_Click(object sender, EventArgs e)
+        {
+            if (tagsTextBoxList.Count<10)
+            {
+                TextBox tb = CreateTagTextBox();
+                tagsTextBoxList.Add(tb);
+                tagsFlowLayoutPanel.Controls.Add(tagsTextBoxList.Last());
+            }
+        }
     }
 }
