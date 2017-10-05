@@ -13,10 +13,15 @@ namespace ImageMaker
 {
     public partial class ImageViewer : Form, IImageViewer
     {
+        enum Operation
+        {
+            Open,
+            Save
+        }
         public ImageViewer()
         {
-            ImageControllerSingleton pictureController = ImageControllerSingleton.Instance;
-            pictureController.Init(this);
+            ImageControllerSingleton imageController = ImageControllerSingleton.Instance;
+            imageController.Init(this);
             InitializeComponent();
         }
 
@@ -34,62 +39,46 @@ namespace ImageMaker
                 return possibleFileFormatList;
             }
         }
-        public Image CurrentImage { set; get; }
-        public string openedFileName { set; get; }
-        public List<string> TagsList
+        public string OpenedFileName { set; get; }
+        public List<string> GetTags()
         {
-            get
+            List<string> tagsStringList = new List<string>();
+            foreach (var tagTextBox in tagsTextBoxList)
             {
-                List<string> tagsStringList = new List<string>();
-                foreach (var tagTextBox in tagsTextBoxList)
+                if (!String.IsNullOrEmpty(tagTextBox.Text))
                 {
-                    if (!String.IsNullOrEmpty(tagTextBox.Text))
-                    {
-                        tagsStringList.Add(tagTextBox.Text);
-                    }
-                }
-                return tagsStringList;
-            }
-            set
-            {
-                tagsTextBoxList.Clear();
-                tagsFlowLayoutPanel.Controls.Clear();
-                foreach (var tag in value)
-                {
-                    TextBox tb = CreateTagTextBox();
-                    tb.Text = tag;
-                    tagsTextBoxList.Add(tb);
-                    tagsFlowLayoutPanel.Controls.Add(tb);
+                    tagsStringList.Add(tagTextBox.Text);
                 }
             }
+            return tagsStringList;
         }
-
-        private TextBox CreateTagTextBox()
+        public void SetTags(List<string> tagsList)
         {
-            TextBox tb = new TextBox();
-            tb.Font = new Font(new FontFamily("Segoe Print"), 12);
-            tb.Width = tagsFlowLayoutPanel.Width - 10;
-            tb.KeyDown += TagTextBox_KeyDown;
-            return tb;
-        }
-
-        private void TagTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e != null && e.KeyData == Keys.Enter)
+            tagsTextBoxList.Clear();
+            tagsFlowLayoutPanel.Controls.Clear();
+            foreach (var tag in tagsList)
             {
-                addTagButton_Click(sender, e);
-                tagsTextBoxList.Last().Focus();
+                TextBox tagTextBox = CreateFormatedTextBox();
+                tagTextBox.Text = tag;
+                tagsTextBoxList.Add(tagTextBox);
+                tagsFlowLayoutPanel.Controls.Add(tagTextBox);
             }
+        }      
+
+        private TextBox CreateFormatedTextBox()
+        {
+            TextBox tagTextBox = new TextBox();
+            tagTextBox.Font = new Font(new FontFamily("Segoe Print"), 12);
+            tagTextBox.Width = tagsFlowLayoutPanel.Width - 10;
+            tagTextBox.KeyDown += TagTextBox_KeyDown;
+            return tagTextBox;
         }
 
-        public void ShowImage()
+        public void ShowImage(Image image)
         {
-            if (CurrentImage != null)
-            {
-                pictureBox.Image = CurrentImage;
-            }
+            pictureBox.Image = image;
         }
-        public void ErrorMessage(string msg)
+        public void ShowMessage(string msg)
         {
             MessageBox.Show(msg);
         }
@@ -114,67 +103,84 @@ namespace ImageMaker
             }
         }
 
-        private string GetPossibleFileFormatListOpen(List<string> possibleFileFormatList)
+        private string GetPossibleFileFormatList(List<string> possibleFileFormatList, Operation operation)
         {
-            string resultString = "(";
-            foreach (var listItem in possibleFileFormatList)
+            string resultString = String.Empty;
+            if (operation.Equals(Operation.Open))
             {
-                resultString = String.Concat(resultString, String.Format("*{0},", listItem));
+                resultString = "(";
+                foreach (var listItem in possibleFileFormatList)
+                {
+                    resultString = String.Concat(resultString, String.Format("*{0},", listItem));
+                }
+                resultString = String.Format("{0})|", resultString.Substring(0, resultString.Length - 1));
+                foreach (var listItem in possibleFileFormatList)
+                {
+                    resultString = String.Concat(resultString, String.Format("*{0};", listItem));
+                }
             }
-            resultString = String.Format("{0})|", resultString.Substring(0, resultString.Length - 1));
-            foreach (var listItem in possibleFileFormatList)
+            else if (operation.Equals(Operation.Save))
             {
-                resultString = String.Concat(resultString, String.Format("*{0};", listItem));
+                foreach (var listItem in possibleFileFormatList)
+                {
+                    resultString = String.Concat(resultString, String.Format("(*{0})|*{0}|", listItem));
+                }
             }
             resultString = resultString.Substring(0, resultString.Length-1);
             return resultString;
         }
 
-        private string GetPossibleFileFormatListSave(List<string> possibleFileFormatList)
-        {
-            string resultString = String.Empty;
-            foreach (var listItem in possibleFileFormatList)
-            {
-                resultString = String.Concat(resultString, String.Format("(*{0})|*{0}|", listItem));
-            }
-            resultString = resultString.Substring(0, resultString.Length - 1);
-            return resultString;
-        }
-
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = GetPossibleFileFormatListOpen(PossibleFileFormatList);
-            if (ofd.ShowDialog() == DialogResult.OK)
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = GetPossibleFileFormatList(PossibleFileFormatList,Operation.Open);
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                OnPictureOpen(ofd.FileName);
+                OnPictureOpen(openFileDialog.FileName);
             }
         }
 
         private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = GetPossibleFileFormatListSave(PossibleFileFormatList);
-            sfd.FileName = openedFileName; 
-            if (sfd.ShowDialog() == DialogResult.OK)
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = GetPossibleFileFormatList(PossibleFileFormatList,Operation.Save);
+            saveFileDialog.FileName = OpenedFileName;
+            for (int  i=0; i<possibleFileFormatList.Count;i++)
             {
-                OnPictureSave(sfd.FileName);
+                if (possibleFileFormatList[i].Contains(OpenedFileName.Split('.').Last()))
+                {
+                    saveFileDialog.FilterIndex = i+1;
+                }
+            }
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                OnPictureSave(saveFileDialog.FileName);
             }
         }
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void addTagButton_Click(object sender, EventArgs e)
+        private void AddTagButton_Click(object sender, EventArgs e)
         {
             if (tagsTextBoxList.Count<10)
             {
-                TextBox tb = CreateTagTextBox();
+                TextBox tb = CreateFormatedTextBox();
                 tagsTextBoxList.Add(tb);
                 tagsFlowLayoutPanel.Controls.Add(tagsTextBoxList.Last());
+                tagsTextBoxList.Last().Focus();
             }
         }
+
+        private void TagTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e != null && e.KeyData == Keys.Enter)
+            {
+                AddTagButton_Click(sender, e);
+            }
+        }
+
     }
 }

@@ -8,16 +8,17 @@ using System.Threading.Tasks;
 namespace ImageMaker
 {
     public delegate void ImageOpenHandler(string filePath);
-    public delegate void ImageSaveHandler(string filePath); 
+    public delegate void ImageSaveHandler(string filePath);
+
     public interface IImageViewer
     {
         List<string> PossibleFileFormatList { set; get; }
-        Image CurrentImage { set; get; }
-        string openedFileName { set; get; }
-        List<string> TagsList { set; get; }
+        string OpenedFileName { set; get; }
 
-        void ShowImage();
-        void ErrorMessage(string msg);
+        List<string> GetTags();
+        void SetTags(List<string> tagsList);
+        void ShowImage(Image image);
+        void ShowMessage(string msg);
 
         event ImageOpenHandler ImageOpenEvent;
         event ImageSaveHandler ImageSaveEvent;
